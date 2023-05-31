@@ -185,7 +185,7 @@ function ScheduleMeet() {
   });
 
   const backHandler = () => {
-    router.push("/home/user");
+    router.push("/home/User");
   };
 
   return (
@@ -196,7 +196,7 @@ function ScheduleMeet() {
             <IconButton
               className="bck-ico"
               onClick={() => {
-                router.push("/home/user");
+                router.push("/home/User");
               }}
               sx={{ backgroundColor: "#013289" }}
             >

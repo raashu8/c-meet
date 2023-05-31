@@ -48,7 +48,7 @@ export function loginApi(params) {
               response: e,
             })
           );
-          router.push("/home/user");
+          router.push("/home/User");
         } else {
           errorToast(e.message);
           dispatch(signInAction({ isloading: false, totalElements: 0 }));
@@ -75,7 +75,7 @@ export function loginApi(params) {
 //               response: e,
 //             })
 //           );
-//           router.push("/home/user");
+//           router.push("/home/User");
 //         } else {
 //           errorToast(message);
 //           dispatch(oAuthSignInAction({ isloading: false, totalElements: 0 }));

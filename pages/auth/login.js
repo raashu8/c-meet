@@ -81,7 +81,7 @@ const Login = () => {
           <div className="container-login">
               <IconButton
                 onClick={() => {
-                  router.push("/home/user");
+                  router.push("/home/User");
                 }}
                 className="bck-ico"
               >
