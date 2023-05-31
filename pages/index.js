@@ -3,7 +3,7 @@ import router from "next/router";
 
 function Home() {
   React.useEffect(() => {
-    router.push("/home/user");
+    router.push("/home/User");
   }, []);
   return <></>;
 }
