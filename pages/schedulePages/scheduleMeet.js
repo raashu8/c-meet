@@ -33,12 +33,13 @@ import {
   scheduleMeetingApi,
 } from "@/redux/action/userAction";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { ScheduleMeetDetail } from "@/components/modals/scheduleMeetDetail";
+import ScheduleMeetingDetail from "../../components/modals/ScheduleMeetDetail";
 import { Router } from "next/router";
 import ScheduleMeetLink from "@/components/modals/scheduleMeetLink";
 
 function ScheduleMeet() {
-  const { scheduleMeetInfo, getAllUserInfo, sheduleCalendarInfo } = useSelector(userSelector);
+  const { scheduleMeetInfo, getAllUserInfo, sheduleCalendarInfo } =
+    useSelector(userSelector);
   const [personName, setPersonName] = React.useState([]);
   const [userids, setUserids] = useState("");
   const [usernames, setUsernames] = useState("");
@@ -46,12 +47,12 @@ function ScheduleMeet() {
   const [EndDateTime, setEndDateTime] = useState("");
   const [meetlinkk, setMeetlink] = useState("");
   const [meetopen, setMeetopen] = useState(false);
-  const [openDetails, setOpenDetails] = useState(false)
+  const [openDetails, setOpenDetails] = useState(false);
   const [UserItem, SetUserItem] = useState("");
   const [text, setText] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState("");
-  const [scheduleDetail, setScheduleDetails] = useState("")
+  const [scheduleDetail, setScheduleDetails] = useState("");
 
   const localizer = momentLocalizer(moment);
   const userid =
@@ -69,7 +70,6 @@ function ScheduleMeet() {
       setUsernames("");
     }
   }, [getAllUserInfo]);
-
 
   useEffect(() => {
     var item = sessionStorage.getItem("username");
@@ -139,16 +139,18 @@ function ScheduleMeet() {
 
   const currentDate = new Date();
 
-  const events = sheduleCalendarInfo?.response?.map((e) => ({
-    title: e.title,
-    start: moment(e.timeFrom).subtract(5.5, 'hours').toDate(),
-    end: moment(e.timeEnd).subtract(5.5, 'hours').toDate(),
-    roomid: e.roomid
-  })).filter((event) => event.end >= currentDate);
+  const events = sheduleCalendarInfo?.response
+    ?.map((e) => ({
+      title: e.title,
+      start: moment(e.timeFrom).subtract(5.5, "hours").toDate(),
+      end: moment(e.timeEnd).subtract(5.5, "hours").toDate(),
+      roomid: e.roomid,
+    }))
+    .filter((event) => event.end >= currentDate);
 
   const formik = useFormik({
     enableReinitialize: true,
-    
+
     initialValues: {
       title: text,
       startdate: StartDateTime,
@@ -158,7 +160,6 @@ function ScheduleMeet() {
       username: UserItem,
       addguests: personName,
     },
-    
 
     validationSchema: Yup.object({
       title: Yup.string().required("Title  is required *"),
@@ -166,7 +167,6 @@ function ScheduleMeet() {
       enddate: Yup.string().required("End Date & Time is required *"),
       addguests: Yup.array().min(1, "Please select at least one guest *"),
     }),
-
 
     onSubmit: (val) => {
       const req = {
@@ -182,12 +182,11 @@ function ScheduleMeet() {
       dispatch(scheduleMeetingApi(val, req, userid));
       setMeetopen(true);
     },
-
   });
 
   const backHandler = () => {
     router.push("/home/user");
-  }
+  };
 
   return (
     <>
@@ -205,7 +204,9 @@ function ScheduleMeet() {
             </IconButton>
             <div className="row">
               <div className="col-lg-6 d-flex flex-column justify-content-center">
-                <h1 data-aos="fade-up" style={{fontFamily:"math"}} >Schedule Meeting</h1>
+                <h1 data-aos="fade-up" style={{ fontFamily: "math" }}>
+                  Schedule Meeting
+                </h1>
                 <div className="row">
                   <div className="col-lg-12">
                     <div>
@@ -225,22 +226,27 @@ function ScheduleMeet() {
                         }}
                       />
                       {formik.touched.title && formik.errors.title ? (
-                        <div className="err-nt" >{formik.errors.title}</div>
+                        <div className="err-nt">{formik.errors.title}</div>
                       ) : null}
                     </div>
                     <div style={{ paddingTop: "30px" }}>
-                      <LocalizationProvider dateAdapter={AdapterDayjs} sx={{ display: "flex" }}>
+                      <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        sx={{ display: "flex" }}
+                      >
                         <DateTimePicker
                           label="Start Date & Time"
                           onChange={(newValue) => {
                             let FormatedDate = getFormatedDate(newValue?.$d);
                             setStartDateTime(FormatedDate);
-                            formik.setFieldValue('startDate', FormatedDate);
+                            formik.setFieldValue("startDate", FormatedDate);
                           }}
                           sx={{ width: "80%" }}
                         />
                         {formik.touched.startdate && formik.errors.startdate ? (
-                          <div className="err-nt" >{formik.errors.startdate}</div>
+                          <div className="err-nt">
+                            {formik.errors.startdate}
+                          </div>
                         ) : null}
 
                         <DateTimePicker
@@ -248,12 +254,12 @@ function ScheduleMeet() {
                           onChange={(newValue) => {
                             let FormatedDate = getFormatedDate(newValue?.$d);
                             setEndDateTime(FormatedDate);
-                            formik.setFieldValue('enddate', FormatedDate);
+                            formik.setFieldValue("enddate", FormatedDate);
                           }}
                           sx={{ marginTop: "30px", width: "80%" }}
                         />
                         {formik.touched.enddate && formik.errors.enddate ? (
-                          <div className="err-nt" >{formik.errors.enddate}</div>
+                          <div className="err-nt">{formik.errors.enddate}</div>
                         ) : null}
                       </LocalizationProvider>
                     </div>
@@ -273,7 +279,10 @@ function ScheduleMeet() {
                             MenuProps={MenuProps}
                           >
                             {getAllUserInfo?.map((name) => (
-                              <MenuItem key={name.username} value={name.username}>
+                              <MenuItem
+                                key={name.username}
+                                value={name.username}
+                              >
                                 <Checkbox
                                   checked={formik.values.addguests.includes(
                                     name.username
@@ -283,8 +292,9 @@ function ScheduleMeet() {
                               </MenuItem>
                             ))}
                           </Select>
-                          {formik.touched.addguests && formik.errors.addguests ? (
-                            <div className="err-nt" >
+                          {formik.touched.addguests &&
+                          formik.errors.addguests ? (
+                            <div className="err-nt">
                               {formik.errors.addguests}
                             </div>
                           ) : null}
@@ -311,7 +321,6 @@ function ScheduleMeet() {
                     <Toolbar />
                     <hr />
                   </div>
-
                 </div>
               </div>
               <div
@@ -328,8 +337,16 @@ function ScheduleMeet() {
           <div className="container">
             <div className="row">
               <div className="col-lg-12">
-                <div style={{ height: 600, marginBottom: "10rem", width: "100%" }}>
-                  <h1 data-aos="fade-up"style={{fontFamily:"math"}} className="sched-title">Upcoming Meetings</h1>
+                <div
+                  style={{ height: 600, marginBottom: "10rem", width: "100%" }}
+                >
+                  <h1
+                    data-aos="fade-up"
+                    style={{ fontFamily: "math" }}
+                    className="sched-title"
+                  >
+                    Upcoming Meetings
+                  </h1>
                   <Calendar
                     style={{ paddingTop: "30px " }}
                     localizer={localizer}
@@ -338,14 +355,13 @@ function ScheduleMeet() {
                     endAccessor="end"
                     onSelectEvent={(e) => {
                       // console.log(e, "even")
-                      setScheduleDetails(e)
+                      setScheduleDetails(e);
                       // alert(e.title + e.start + e.end)
-                      setOpenDetails(true)
+                      setOpenDetails(true);
                     }}
                   />
                 </div>
               </div>
-          
             </div>
           </div>
         </section>
@@ -355,7 +371,7 @@ function ScheduleMeet() {
         setMeetopen={setMeetopen}
         meetlinkk={scheduleMeetInfo}
       />
-      <ScheduleMeetDetail
+      <ScheduleMeetingDetail
         openDetails={openDetails}
         setOpenDetails={setOpenDetails}
         scheduleDetail={scheduleDetail}
